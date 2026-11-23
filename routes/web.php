@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 
 // =====================================================
-// LOGIN
+// AUTENTIKASI (LOGIN & LUPA PASSWORD)
 // =====================================================
 
 // Halaman login
@@ -39,6 +39,13 @@ Route::post('/login', [LoginController::class, 'login'])
 // Logout
 Route::get('/logout', [LoginController::class, 'logout'])
     ->name('logout');
+
+// Lupa Password
+Route::get('/lupa-password', [LoginController::class, 'lupaPasswordView'])
+    ->name('lupa-password');
+
+Route::post('/lupa-password', [LoginController::class, 'resetPassword'])
+    ->name('lupa-password.update');
 
 
 // =====================================================
@@ -152,10 +159,8 @@ Route::middleware('role:admin')->group(function () {
     // LOG AKTIVITAS
     // =========================
 
-    Route::middleware('role:admin')->group(function () {
     Route::get('/admin/log-aktivitas', [LogAktivitasController::class, 'index'])
         ->name('admin.log.index');
-        });
 
 });
 
@@ -189,6 +194,9 @@ Route::middleware('role:petugas')->group(function () {
 
     Route::put('/petugas/transaksi/keluar/{id}', [TransaksiController::class, 'keluar'])
         ->name('petugas.transaksi.keluar');
+
+    Route::get('/petugas/transaksi/cek-kendaraan-baru', [TransaksiController::class, 'cekKendaraanBaru'])
+        ->name('petugas.transaksi.cek_kendaraan_baru');
 
 
     // =========================

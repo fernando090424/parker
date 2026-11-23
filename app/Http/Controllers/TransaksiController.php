@@ -52,8 +52,12 @@ class TransaksiController extends Controller
     // =====================================================
     public function create()
     {
-        // DATA KENDARAAN
+        // DATA KENDARAAN (Hanya yang BELUM PERNAH masuk transaksi sama sekali)
         $kendaraans = DB::table('tb_kendaraan')
+            ->whereNotIn('id_kendaraan', function ($query) {
+                $query->select('id_kendaraan')
+                      ->from('tb_transaksi');
+            })
             ->orderBy('plat_nomor', 'asc')
             ->get();
 
@@ -93,21 +97,19 @@ class TransaksiController extends Controller
         ]);
 
 
-        // CEK APAKAH KENDARAAN MASIH PARKIR
-        $masihParkir = DB::table('tb_transaksi')
+        // CEK APAKAH KENDARAAN SUDAH PERNAH DIPROSES TRANSAKSI
+        $sudahTransaksi = DB::table('tb_transaksi')
             ->where('id_kendaraan', $request->id_kendaraan)
-            ->where('status', 'masuk')
             ->exists();
 
 
-        if ($masihParkir) {
+        if ($sudahTransaksi) {
             return redirect()
                 ->back()
                 ->withInput()
-                ->with(
-                    'error',
-                    'Kendaraan tersebut masih berada di area parkir!'
-                );
+                ->withErrors([
+                    'id_kendaraan' => 'Kendaraan tersebut sudah pernah diproses transaksi parkir!'
+                ]);
         }
 
 
@@ -120,7 +122,7 @@ class TransaksiController extends Controller
         if (!$area) {
             return redirect()
                 ->back()
-                ->with('error', 'Area parkir tidak ditemukan!');
+                ->withErrors(['id_area' => 'Area parkir tidak ditemukan!']);
         }
 
 
@@ -128,46 +130,29 @@ class TransaksiController extends Controller
         if ($area->terisi >= $area->kapasitas) {
             return redirect()
                 ->back()
-                ->with('error', 'Area parkir sudah penuh!');
+                ->withErrors(['id_area' => 'Area parkir sudah penuh!']);
         }
 
 
-        // SIMPAN TRANSAKSI
+        // SIMPAN TRANSAKSI (Kolom 'terisi' otomatis bertambah lewat Database Trigger)
         DB::table('tb_transaksi')->insert([
             'id_kendaraan' => $request->id_kendaraan,
-
-            'waktu_masuk' => Carbon::now(),
-
+            'waktu_masuk'  => Carbon::now(),
             'waktu_keluar' => null,
-
-            'id_tarif' => $request->id_tarif,
-
-            'durasi_jam' => null,
-
-            'biaya_total' => null,
-
-            'status' => 'masuk',
-
-            'id_user' => session('id_user'),
-
-            'id_area' => $request->id_area,
+            'id_tarif'     => $request->id_tarif,
+            'durasi_jam'   => null,
+            'biaya_total'  => null,
+            'status'       => 'masuk',
+            'id_user'      => session('id_user'),
+            'id_area'      => $request->id_area,
         ]);
-
-
-        // TAMBAH SLOT TERISI
-        DB::table('tb_area_parkir')
-            ->where('id_area', $request->id_area)
-            ->increment('terisi');
 
 
         // CATAT LOG
         if (session('id_user')) {
-
             DB::table('tb_log_aktivitas')->insert([
-                'id_user' => session('id_user'),
-
-                'aktivitas' => 'Menambahkan kendaraan masuk',
-
+                'id_user'         => session('id_user'),
+                'aktivitas'       => 'Menambahkan kendaraan masuk',
                 'waktu_aktivitas' => Carbon::now(),
             ]);
         }
@@ -205,7 +190,6 @@ class TransaksiController extends Controller
 
         // CEK TRANSAKSI
         if (!$transaksi) {
-
             return redirect()
                 ->back()
                 ->with(
@@ -217,7 +201,6 @@ class TransaksiController extends Controller
 
         // CEK STATUS
         if ($transaksi->status === 'keluar') {
-
             return redirect()
                 ->back()
                 ->with(
@@ -227,104 +210,46 @@ class TransaksiController extends Controller
         }
 
 
-        // =====================================
-        // WAKTU KELUAR SEKARANG
-        // =====================================
-
+        // WAKTU KELUAR & MASUK
         $waktuKeluar = Carbon::now();
+        $waktuMasuk = Carbon::parse($transaksi->waktu_masuk);
 
 
-        // =====================================
-        // WAKTU MASUK
-        // =====================================
-
-        $waktuMasuk = Carbon::parse(
-            $transaksi->waktu_masuk
-        );
-
-
-        // =====================================
-        // HITUNG DURASI DALAM MENIT
-        // =====================================
-
-        $durasiMenit = $waktuMasuk
-            ->diffInMinutes($waktuKeluar);
-
-
-        // =====================================
-        // UBAH MENJADI JAM
-        // =====================================
-
+        // HITUNG DURASI DALAM MENIT & UBAH KE JAM (MINIMAL 1 JAM)
+        $durasiMenit = $waktuMasuk->diffInMinutes($waktuKeluar);
         $durasiJam = ceil($durasiMenit / 60);
 
-
-        // MINIMAL 1 JAM
         if ($durasiJam < 1) {
-
             $durasiJam = 1;
         }
 
 
-        // =====================================
         // HITUNG BIAYA
-        // =====================================
-
-        $biayaTotal =
-            $durasiJam *
-            $transaksi->tarif_per_jam;
+        $biayaTotal = $durasiJam * $transaksi->tarif_per_jam;
 
 
-        // =====================================
-        // UPDATE TRANSAKSI
-        // =====================================
-
+        // UPDATE TRANSAKSI (Kolom 'terisi' otomatis berkurang lewat Database Trigger)
         DB::table('tb_transaksi')
             ->where('id_parkir', $id)
             ->update([
-
                 'waktu_keluar' => $waktuKeluar,
-
-                'durasi_jam' => $durasiJam,
-
-                'biaya_total' => $biayaTotal,
-
-                'status' => 'keluar',
-
+                'durasi_jam'   => $durasiJam,
+                'biaya_total'  => $biayaTotal,
+                'status'       => 'keluar',
             ]);
 
 
-        // =====================================
-        // KURANGI SLOT AREA PARKIR
-        // =====================================
-
-        DB::table('tb_area_parkir')
-            ->where('id_area', $transaksi->id_area)
-            ->where('terisi', '>', 0)
-            ->decrement('terisi');
-
-
-        // =====================================
         // CATAT LOG
-        // =====================================
-
         if (session('id_user')) {
-
             DB::table('tb_log_aktivitas')->insert([
-
-                'id_user' => session('id_user'),
-
-                'aktivitas' => 'Memproses kendaraan keluar',
-
+                'id_user'         => session('id_user'),
+                'aktivitas'       => 'Memproses kendaraan keluar',
                 'waktu_aktivitas' => Carbon::now(),
-
             ]);
         }
 
 
-        // =====================================
         // KEMBALI KE HALAMAN TRANSAKSI
-        // =====================================
-
         return redirect()
             ->route('petugas.transaksi.index')
             ->with(
@@ -332,5 +257,25 @@ class TransaksiController extends Controller
                 'Kendaraan berhasil keluar! Biaya parkir: Rp ' .
                 number_format($biayaTotal, 0, ',', '.')
             );
+    }
+
+
+    // =====================================================
+    // CEK DATA KENDARAAN BARU YANG DIINPUT ADMIN
+    // =====================================================
+    public function cekKendaraanBaru(Request $request)
+    {
+        // Cari kendaraan dari Admin yang belum pernah masuk transaksi parkir sama sekali
+        $kendaraanBelumParkir = DB::table('tb_kendaraan')
+            ->whereNotIn('id_kendaraan', function ($query) {
+                $query->select('id_kendaraan')->from('tb_transaksi');
+            })
+            ->orderBy('id_kendaraan', 'desc')
+            ->get();
+
+        return response()->json([
+            'jumlah'  => $kendaraanBelumParkir->count(),
+            'terbaru' => $kendaraanBelumParkir->first(),
+        ]);
     }
 }

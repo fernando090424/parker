@@ -345,11 +345,14 @@
                         </option>
 
                         @foreach($areas as $area)
+                            @php
+                                $sisa = $area->kapasitas - $area->terisi;
+                            @endphp
 
-                            <option value="{{ $area->id_area }}">
+                            <option value="{{ $area->id_area }}" {{ $sisa <= 0 ? 'disabled' : '' }}>
 
                                 {{ $area->nama_area }}
-                                (Kapasitas: {{ $area->kapasitas }})
+                                ({{ $sisa <= 0 ? 'PENUH' : 'Sisa Kapasitas: ' . $sisa }})
 
                             </option>
 

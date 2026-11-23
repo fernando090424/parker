@@ -590,7 +590,7 @@
                         Ingat saya
                     </label>
 
-                    <a href="#" class="forgot">
+                    <a href="{{ route('lupa-password') }}" class="forgot">
                         Lupa kata sandi?
                     </a>
                 </div>

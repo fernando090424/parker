@@ -352,7 +352,7 @@
                 🅿️
             </div>
 
-            <h1>PARKIR KABOSA</h1>
+            <h1>PARKIR KABASA</h1>
 
             <p>Struk Pembayaran Parkir</p>
 
@@ -486,4 +486,4 @@
 
 </body>
 
-</html>
+</html> 

@@ -72,21 +72,13 @@
         }
 
         /* SIDEBAR */
-
         .sidebar {
             width: 255px;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
             padding: 25px 18px;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    rgba(33, 17, 61, 0.98),
-                    rgba(15, 11, 25, 0.98)
-                );
-
+            background: linear-gradient(180deg, rgba(33, 17, 61, 0.98), rgba(15, 11, 25, 0.98));
             border-right: 1px solid rgba(168, 85, 247, 0.2);
             box-shadow: 10px 0 35px rgba(0, 0, 0, 0.2);
         }
@@ -95,29 +87,22 @@
             display: flex;
             align-items: center;
             gap: 12px;
-
             padding: 0 8px 25px;
             margin-bottom: 15px;
-
             border-bottom: 1px solid rgba(192, 132, 252, 0.15);
         }
 
         .brand-mark {
             width: 42px;
             height: 42px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 13px;
-
             background: linear-gradient(135deg, #6d28d9, #a855f7);
             color: white;
-
             font-size: 22px;
-
             box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
         }
 
@@ -139,17 +124,13 @@
             display: flex;
             align-items: center;
             gap: 13px;
-
             padding: 14px 15px;
             border: 1px solid transparent;
             border-radius: 12px;
-
             color: #b9acd0;
             text-decoration: none;
-
             font-size: 14px;
             font-weight: 600;
-
             transition: 0.3s ease;
         }
 
@@ -161,30 +142,21 @@
         }
 
         .nav-item.active {
-            background: linear-gradient(
-                135deg,
-                rgba(109, 40, 217, 0.9),
-                rgba(168, 85, 247, 0.65)
-            );
-
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.9), rgba(168, 85, 247, 0.65));
             border-color: rgba(216, 180, 254, 0.3);
             color: white;
-
             box-shadow: 0 8px 20px rgba(109, 40, 217, 0.2);
         }
 
         .sidebar-foot {
             padding-top: 18px;
-
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-
             color: #8f82a8;
             font-size: 12px;
             line-height: 1.8;
         }
 
         /* MAIN */
-
         .main {
             flex: 1;
             min-width: 0;
@@ -196,17 +168,14 @@
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-
             margin-bottom: 30px;
         }
 
         .topbar h1 {
             margin: 0 0 8px;
-
             color: white;
             font-size: 29px;
             font-weight: 800;
-
             text-shadow: 0 0 18px rgba(192, 132, 252, 0.3);
         }
 
@@ -219,37 +188,24 @@
             display: flex;
             align-items: center;
             gap: 12px;
-
             padding: 9px 17px 9px 9px;
-
             border: 1px solid rgba(168, 85, 247, 0.25);
             border-radius: 15px;
-
-            background: linear-gradient(
-                145deg,
-                rgba(31, 22, 48, 0.98),
-                rgba(18, 14, 30, 0.98)
-            );
-
+            background: linear-gradient(145deg, rgba(31, 22, 48, 0.98), rgba(18, 14, 30, 0.98));
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .avatar {
             width: 43px;
             height: 43px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             border-radius: 50%;
-
             background: linear-gradient(135deg, #6d28d9, #a855f7);
             color: white;
-
             font-size: 17px;
             font-weight: 800;
-
             box-shadow: 0 0 18px rgba(168, 85, 247, 0.25);
         }
 
@@ -265,8 +221,23 @@
             font-size: 12px;
         }
 
-        /* STATISTIK */
+        /* NOTIFIKASI REALTIME */
+        .notif-realtime {
+            display: none;
+            align-items: center;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.35), rgba(168, 85, 247, 0.2));
+            border: 1px solid rgba(168, 85, 247, 0.6);
+            border-left: 5px solid #a855f7;
+            color: #f3e8ff;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: 0 10px 25px rgba(109, 40, 217, 0.25);
+        }
 
+        /* STATISTIK */
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -277,22 +248,11 @@
         .stat-card {
             position: relative;
             overflow: hidden;
-
             padding: 21px;
-
             border: 1px solid rgba(168, 85, 247, 0.2);
             border-radius: 18px;
-
-            background: linear-gradient(
-                145deg,
-                rgba(31, 22, 48, 0.98),
-                rgba(18, 14, 30, 0.98)
-            );
-
-            box-shadow:
-                0 12px 30px rgba(0, 0, 0, 0.22),
-                0 0 20px rgba(124, 58, 237, 0.05);
-
+            background: linear-gradient(145deg, rgba(31, 22, 48, 0.98), rgba(18, 14, 30, 0.98));
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22), 0 0 20px rgba(124, 58, 237, 0.05);
             transition: 0.3s ease;
         }
 
@@ -301,55 +261,35 @@
             position: absolute;
             top: 0;
             left: 0;
-
             width: 100%;
             height: 4px;
-
             background: linear-gradient(90deg, #7c3aed, #c084fc);
         }
 
         .stat-card:hover {
             transform: translateY(-4px);
             border-color: rgba(192, 132, 252, 0.45);
-
-            box-shadow:
-                0 18px 35px rgba(0, 0, 0, 0.3),
-                0 0 25px rgba(168, 85, 247, 0.12);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.3), 0 0 25px rgba(168, 85, 247, 0.12);
         }
 
         .stat-icon {
             width: 45px;
             height: 45px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             margin-bottom: 17px;
-
             border-radius: 13px;
             font-size: 21px;
         }
 
-        .blue {
-            background: var(--blue-soft);
-        }
-
-        .teal {
-            background: var(--teal-soft);
-        }
-
-        .indigo {
-            background: var(--pink-soft);
-        }
-
-        .slate {
-            background: var(--orange-soft);
-        }
+        .blue { background: var(--blue-soft); }
+        .teal { background: var(--teal-soft); }
+        .indigo { background: var(--pink-soft); }
+        .slate { background: var(--orange-soft); }
 
         .stat-value {
             overflow-wrap: anywhere;
-
             color: white;
             font-size: 25px;
             font-weight: 800;
@@ -357,21 +297,18 @@
 
         .stat-label {
             margin-top: 7px;
-
             color: var(--muted);
             font-size: 13px;
         }
 
         .stat-trend {
             margin-top: 15px;
-
             color: #c4b5fd;
             font-size: 11px;
             line-height: 1.5;
         }
 
         /* CONTENT */
-
         .content-grid {
             display: grid;
             grid-template-columns: 1.7fr 1fr;
@@ -381,16 +318,9 @@
         .panel {
             min-width: 0;
             padding: 23px;
-
             border: 1px solid rgba(168, 85, 247, 0.2);
             border-radius: 18px;
-
-            background: linear-gradient(
-                145deg,
-                rgba(31, 22, 48, 0.98),
-                rgba(18, 14, 30, 0.98)
-            );
-
+            background: linear-gradient(145deg, rgba(31, 22, 48, 0.98), rgba(18, 14, 30, 0.98));
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
         }
 
@@ -399,13 +329,11 @@
             align-items: center;
             justify-content: space-between;
             gap: 15px;
-
             margin-bottom: 20px;
         }
 
         .panel-head h2 {
             margin: 0;
-
             color: white;
             font-size: 16px;
             font-weight: 700;
@@ -418,7 +346,6 @@
         }
 
         /* TABLE */
-
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -431,9 +358,7 @@
 
         th {
             padding: 12px 10px;
-
             border-bottom: 1px solid var(--border);
-
             color: #a8a0ba;
             font-size: 11px;
             font-weight: 600;
@@ -443,9 +368,7 @@
 
         td {
             padding: 15px 10px;
-
             border-bottom: 1px solid rgba(56, 37, 79, 0.65);
-
             color: #ddd6fe;
             font-size: 13px;
             white-space: nowrap;
@@ -471,10 +394,8 @@
 
         .badge {
             display: inline-block;
-
             padding: 6px 11px;
             border-radius: 20px;
-
             font-size: 11px;
             font-weight: 700;
         }
@@ -492,47 +413,36 @@
         }
 
         /* DONUT */
-
         .donut-wrap {
             display: flex;
             flex-direction: column;
             align-items: center;
-
             padding-top: 12px;
         }
 
         .donut {
             width: 190px;
             height: 190px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             border-radius: 50%;
-
             background: conic-gradient(
                 #a855f7 0% {{ $persentaseTerisi }}%,
                 #302342 {{ $persentaseTerisi }}% 100%
             );
-
-            box-shadow:
-                0 0 25px rgba(168, 85, 247, 0.15),
-                inset 0 0 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.15), inset 0 0 20px rgba(0, 0, 0, 0.15);
         }
 
         .donut-center {
             width: 138px;
             height: 138px;
-
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-
             border: 1px solid rgba(192, 132, 252, 0.15);
             border-radius: 50%;
-
             background: #171326;
         }
 
@@ -540,7 +450,6 @@
             color: white;
             font-size: 28px;
             font-weight: 800;
-
             text-shadow: 0 0 15px rgba(192, 132, 252, 0.35);
         }
 
@@ -555,7 +464,6 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 15px;
-
             margin-top: 25px;
         }
 
@@ -565,16 +473,13 @@
         }
 
         /* RESPONSIVE */
-
         @media (max-width: 1200px) {
             .main {
                 padding: 28px;
             }
-
             .stats {
                 grid-template-columns: repeat(2, 1fr);
             }
-
             .content-grid {
                 grid-template-columns: 1fr;
             }
@@ -584,16 +489,13 @@
             .sidebar {
                 width: 220px;
             }
-
             .main {
                 padding: 25px 20px;
             }
-
             .topbar {
                 align-items: flex-start;
                 flex-direction: column;
             }
-
             .profile {
                 width: 100%;
             }
@@ -603,33 +505,26 @@
             .sidebar {
                 display: none;
             }
-
             .main {
                 padding: 22px 15px;
             }
-
             .stats {
                 grid-template-columns: 1fr;
             }
-
             .panel {
                 padding: 18px 14px;
             }
-
             .panel-head {
                 align-items: flex-start;
                 flex-direction: column;
             }
-
             .topbar h1 {
                 font-size: 25px;
             }
-
             .donut {
                 width: 170px;
                 height: 170px;
             }
-
             .donut-center {
                 width: 124px;
                 height: 124px;
@@ -643,36 +538,19 @@
 <div class="layout">
 
     <!-- SIDEBAR -->
-
     <aside class="sidebar">
-
         <div class="brand">
-            <div class="brand-mark">
-                🅿️
-            </div>
-
-            <div class="brand-name">
-                Parkir Kabasa
-            </div>
+            <div class="brand-mark">🅿️</div>
+            <div class="brand-name">Parkir Kabasa</div>
         </div>
 
         <nav>
-
-            <a href="{{ route('petugas.dashboard') }}"
-               class="nav-item active">
-                🏠 Dashboard
+            <a href="{{ route('petugas.dashboard') }}" class="nav-item active">🏠 Dashboard</a>
+            <a href="{{ route('petugas.transaksi.index') }}" class="nav-item" style="justify-content: space-between;">
+                <span>🚗 Transaksi</span>
+                <span id="sidebar-notif-badge" style="display: none; background: #ef4444; color: white; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; box-shadow: 0 0 10px rgba(239,68,68,0.6);">0</span>
             </a>
-
-            <a href="{{ route('petugas.transaksi.index') }}"
-               class="nav-item">
-                🚗 Transaksi
-            </a>
-
-            <a href="{{ route('logout') }}"
-               class="nav-item">
-                🚪 Logout
-            </a>
-
+            <a href="{{ route('logout') }}" class="nav-item">🚪 Logout</a>
         </nav>
 
         <div class="sidebar-foot">
@@ -680,159 +558,76 @@
             <br>
             Sistem Manajemen Parkir
         </div>
-
     </aside>
 
-
     <!-- MAIN -->
-
     <main class="main">
 
         <div class="topbar">
-
             <div>
                 <h1>Dashboard Petugas</h1>
-
-                <div class="sub">
-                    Ringkasan aktivitas parkir hari ini
-                </div>
+                <div class="sub">Ringkasan aktivitas parkir hari ini</div>
             </div>
 
             <div class="profile">
-
-                <div class="avatar">
-                    P
-                </div>
-
+                <div class="avatar">P</div>
                 <div>
-                    <div class="profile-name">
-                        Petugas Parkir
-                    </div>
-
-                    <div class="profile-role">
-                        Petugas
-                    </div>
+                    <div class="profile-name">Petugas Parkir</div>
+                    <div class="profile-role">Petugas</div>
                 </div>
-
             </div>
-
         </div>
 
+        <!-- BANNER NOTIFIKASI OTOMATIS (KENDARAAN BARU DARI ADMIN) -->
+        <div id="notif-kendaraan-baru" class="notif-realtime">
+            <div id="notif-kendaraan-text">
+                🔔 Ada kendaraan baru terdaftar oleh Admin!
+            </div>
+        </div>
 
         <!-- STATISTIK -->
-
         <div class="stats">
-
             <div class="stat-card">
-
-                <div class="stat-icon blue">
-                    🚗
-                </div>
-
-                <div class="stat-value">
-                    {{ $sedangParkir }}
-                </div>
-
-                <div class="stat-label">
-                    Sedang Parkir
-                </div>
-
-                <div class="stat-trend">
-                    Kendaraan masih berada di area
-                </div>
-
+                <div class="stat-icon blue">🚗</div>
+                <div class="stat-value">{{ $sedangParkir }}</div>
+                <div class="stat-label">Sedang Parkir</div>
+                <div class="stat-trend">Kendaraan masih berada di area</div>
             </div>
 
-
             <div class="stat-card">
-
-                <div class="stat-icon teal">
-                    📅
-                </div>
-
-                <div class="stat-value">
-                    {{ $totalHariIni }}
-                </div>
-
-                <div class="stat-label">
-                    Total Hari Ini
-                </div>
-
-                <div class="stat-trend">
-                    Total kendaraan masuk hari ini
-                </div>
-
+                <div class="stat-icon teal">📅</div>
+                <div class="stat-value">{{ $totalHariIni }}</div>
+                <div class="stat-label">Total Hari Ini</div>
+                <div class="stat-trend">Total kendaraan masuk hari ini</div>
             </div>
 
-
             <div class="stat-card">
-
-                <div class="stat-icon indigo">
-                    💰
-                </div>
-
-                <div class="stat-value">
-                    Rp {{ number_format($pendapatanHariIni, 0, ',', '.') }}
-                </div>
-
-                <div class="stat-label">
-                    Pendapatan Hari Ini
-                </div>
-
-                <div class="stat-trend">
-                    Dari kendaraan yang sudah keluar
-                </div>
-
+                <div class="stat-icon indigo">💰</div>
+                <div class="stat-value">Rp {{ number_format($pendapatanHariIni, 0, ',', '.') }}</div>
+                <div class="stat-label">Pendapatan Hari Ini</div>
+                <div class="stat-trend">Dari kendaraan yang sudah keluar</div>
             </div>
 
-
             <div class="stat-card">
-
-                <div class="stat-icon slate">
-                    ⏱️
-                </div>
-
-                <div class="stat-value">
-                    {{ $rataDurasiFormat }}
-                </div>
-
-                <div class="stat-label">
-                    Rata-rata Durasi
-                </div>
-
-                <div class="stat-trend">
-                    Berdasarkan transaksi selesai
-                </div>
-
+                <div class="stat-icon slate">⏱️</div>
+                <div class="stat-value">{{ $rataDurasiFormat }}</div>
+                <div class="stat-label">Rata-rata Durasi</div>
+                <div class="stat-trend">Berdasarkan transaksi selesai</div>
             </div>
-
         </div>
 
-
         <!-- CONTENT -->
-
         <div class="content-grid">
 
             <!-- KENDARAAN TERBARU -->
-
             <div class="panel">
-
                 <div class="panel-head">
-
-                    <h2>
-                        🚘 Kendaraan Masuk Terbaru
-                    </h2>
-
-                    <span class="count">
-                        6 transaksi terakhir
-                    </span>
-
+                    <h2>🚘 Kendaraan Masuk Terbaru</h2>
+                    <span class="count">6 transaksi terakhir</span>
                 </div>
 
                 <div class="table-wrapper">
-
                     <table>
-
                         <thead>
                             <tr>
                                 <th>Plat Nomor</th>
@@ -843,115 +638,51 @@
                         </thead>
 
                         <tbody>
-
-                        @forelse($kendaraanTerbaru as $transaksi)
-
-                            <tr>
-
-                                <td class="plat">
-                                    {{ $transaksi->plat_nomor }}
-                                </td>
-
-                                <td>
-                                    {{ ucfirst($transaksi->jenis_kendaraan) }}
-                                </td>
-
-                                <td>
-                                    {{ date('H:i', strtotime($transaksi->waktu_masuk)) }}
-                                </td>
-
-                                <td>
-
-                                    @if($transaksi->status == 'masuk')
-
-                                        <span class="badge parkir">
-                                            Sedang Parkir
-                                        </span>
-
-                                    @else
-
-                                        <span class="badge selesai">
-                                            Selesai
-                                        </span>
-
-                                    @endif
-
-                                </td>
-
-                            </tr>
-
-                        @empty
-
-                            <tr>
-
-                                <td colspan="4"
-                                    style="text-align:center; padding:30px; color:#a8a0ba;">
-
-                                    Belum ada transaksi.
-
-                                </td>
-
-                            </tr>
-
-                        @endforelse
-
+                            @forelse($kendaraanTerbaru as $transaksi)
+                                <tr>
+                                    <td class="plat">{{ $transaksi->plat_nomor }}</td>
+                                    <td>{{ ucfirst($transaksi->jenis_kendaraan) }}</td>
+                                    <td>{{ date('H:i', strtotime($transaksi->waktu_masuk)) }}</td>
+                                    <td>
+                                        @if($transaksi->status == 'masuk')
+                                            <span class="badge parkir">Sedang Parkir</span>
+                                        @else
+                                            <span class="badge selesai">Selesai</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" style="text-align:center; padding:30px; color:#a8a0ba;">
+                                        Belum ada transaksi.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
-
                     </table>
-
                 </div>
-
             </div>
 
-
             <!-- SLOT PARKIR -->
-
             <div class="panel">
-
                 <div class="panel-head">
-
-                    <h2>
-                        📊 Ketersediaan Slot
-                    </h2>
-
-                    <span class="count">
-                        Total {{ $totalSlot }} Slot
-                    </span>
-
+                    <h2>📊 Ketersediaan Slot</h2>
+                    <span class="count">Total {{ $totalSlot }} Slot</span>
                 </div>
 
                 <div class="donut-wrap">
-
                     <div class="donut">
-
                         <div class="donut-center">
-
-                            <div class="pct">
-                                {{ $persentaseTerisi }}%
-                            </div>
-
-                            <div class="donut-label">
-                                Terisi
-                            </div>
-
+                            <div class="pct">{{ $persentaseTerisi }}%</div>
+                            <div class="donut-label">Terisi</div>
                         </div>
-
                     </div>
 
                     <div class="legend">
-
-                        <div class="legend-item">
-                            🟣 Terisi ({{ $slotTerisi }})
-                        </div>
-
-                        <div class="legend-item">
-                            ⚪ Kosong ({{ $slotKosong }})
-                        </div>
-
+                        <div class="legend-item">🟣 Terisi ({{ $slotTerisi }})</div>
+                        <div class="legend-item">⚪ Kosong ({{ $slotKosong }})</div>
                     </div>
-
                 </div>
-
             </div>
 
         </div>
@@ -959,6 +690,37 @@
     </main>
 
 </div>
+
+<script>
+    function cekKendaraanDariAdmin() {
+        fetch(`{{ route('petugas.transaksi.cek_kendaraan_baru') }}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Akses ditolak / session berubah');
+                return response.json();
+            })
+            .then(res => {
+                const banner = document.getElementById('notif-kendaraan-baru');
+                const text = document.getElementById('notif-kendaraan-text');
+                const badge = document.getElementById('sidebar-notif-badge');
+
+                if (res.jumlah > 0 && res.terbaru) {
+                    badge.innerText = res.jumlah + ' Baru';
+                    badge.style.display = 'inline-block';
+
+                    const jenis = res.terbaru.jenis_kendaraan.charAt(0).toUpperCase() + res.terbaru.jenis_kendaraan.slice(1);
+                    text.innerHTML = `🔔 <strong>Ada ${res.jumlah} Kendaraan Baru dari Admin!</strong> Terbaru: <strong>${res.terbaru.plat_nomor}</strong> (${jenis} - Pemilik: ${res.terbaru.pemilik}) belum dimasukkan ke area parkir.`;
+                    banner.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                    banner.style.display = 'none';
+                }
+            })
+            .catch(err => console.log('Menunggu pengecekan:', err.message));
+    }
+
+    cekKendaraanDariAdmin();
+    setInterval(cekKendaraanDariAdmin, 3000);
+</script>
 
 </body>
 </html>
