@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 
 class TransaksiController extends Controller
@@ -52,11 +53,16 @@ class TransaksiController extends Controller
     // =====================================================
     public function create()
     {
-        // DATA KENDARAAN (Hanya yang BELUM PERNAH masuk transaksi sama sekali)
+        // Ambil ID kendaraan yang sudah dicatat oleh Admin (baru maupun masuk ulang)
+        $antreanIds = Cache::get('antrean_kendaraan_petugas', []);
+
+        // Tampilkan HANYA kendaraan yang ada di antrean Admin & tidak sedang parkir
         $kendaraans = DB::table('tb_kendaraan')
+            ->whereIn('id_kendaraan', $antreanIds)
             ->whereNotIn('id_kendaraan', function ($query) {
                 $query->select('id_kendaraan')
-                      ->from('tb_transaksi');
+                      ->from('tb_transaksi')
+                      ->where('status', 'masuk');
             })
             ->orderBy('plat_nomor', 'asc')
             ->get();
@@ -97,18 +103,31 @@ class TransaksiController extends Controller
         ]);
 
 
-        // CEK APAKAH KENDARAAN SUDAH PERNAH DIPROSES TRANSAKSI
-        $sudahTransaksi = DB::table('tb_transaksi')
-            ->where('id_kendaraan', $request->id_kendaraan)
-            ->exists();
-
-
-        if ($sudahTransaksi) {
+        // CEK APAKAH KENDARAAN SUDAH DICATAT ADMIN DALAM ANTREAN
+        $antreanIds = Cache::get('antrean_kendaraan_petugas', []);
+        if (!in_array((int) $request->id_kendaraan, $antreanIds)) {
             return redirect()
                 ->back()
                 ->withInput()
                 ->withErrors([
-                    'id_kendaraan' => 'Kendaraan tersebut sudah pernah diproses transaksi parkir!'
+                    'id_kendaraan' => 'Kendaraan ini belum dicatat oleh Admin!'
+                ]);
+        }
+
+
+        // CEK APAKAH KENDARAAN MASIH BERADA DI DALAM AREA PARKIR
+        $sedangParkir = DB::table('tb_transaksi')
+            ->where('id_kendaraan', $request->id_kendaraan)
+            ->where('status', 'masuk')
+            ->exists();
+
+
+        if ($sedangParkir) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors([
+                    'id_kendaraan' => 'Kendaraan tersebut masih berada di dalam area parkir (belum keluar)!'
                 ]);
         }
 
@@ -146,6 +165,11 @@ class TransaksiController extends Controller
             'id_user'      => session('id_user'),
             'id_area'      => $request->id_area,
         ]);
+
+
+        // HAPUS DARI ANTREAN ADMIN AGAR LANGSUNG HILANG DARI DROPDOWN PETUGAS
+        $antreanIds = array_values(array_diff($antreanIds, [(int) $request->id_kendaraan]));
+        Cache::forever('antrean_kendaraan_petugas', $antreanIds);
 
 
         // CATAT LOG
@@ -261,21 +285,26 @@ class TransaksiController extends Controller
 
 
     // =====================================================
-    // CEK DATA KENDARAAN BARU YANG DIINPUT ADMIN
+    // CEK DATA KENDARAAN DARI ADMIN (BARU MAUPUN MASUK ULANG)
     // =====================================================
     public function cekKendaraanBaru(Request $request)
     {
-        // Cari kendaraan dari Admin yang belum pernah masuk transaksi parkir sama sekali
-        $kendaraanBelumParkir = DB::table('tb_kendaraan')
+        $antreanIds = Cache::get('antrean_kendaraan_petugas', []);
+
+        // Cari kendaraan dari antrean Admin yang belum diproses masuk oleh Petugas
+        $kendaraanMenunggu = DB::table('tb_kendaraan')
+            ->whereIn('id_kendaraan', $antreanIds)
             ->whereNotIn('id_kendaraan', function ($query) {
-                $query->select('id_kendaraan')->from('tb_transaksi');
+                $query->select('id_kendaraan')
+                      ->from('tb_transaksi')
+                      ->where('status', 'masuk');
             })
             ->orderBy('id_kendaraan', 'desc')
             ->get();
 
         return response()->json([
-            'jumlah'  => $kendaraanBelumParkir->count(),
-            'terbaru' => $kendaraanBelumParkir->first(),
+            'jumlah'  => $kendaraanMenunggu->count(),
+            'terbaru' => $kendaraanMenunggu->first(),
         ]);
     }
 }

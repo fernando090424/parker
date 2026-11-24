@@ -285,7 +285,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 15px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .panel-title {
@@ -293,6 +293,120 @@
             color: white;
             font-size: 21px;
             font-weight: 800;
+        }
+
+        /* TOOLBAR PENCARIAN & FILTER STATUS */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(11, 11, 18, 0.45);
+            border: 1px solid rgba(168, 85, 247, 0.18);
+            border-radius: 14px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 38px 12px 40px;
+            background: rgba(31, 23, 50, 0.9);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+            border-radius: 11px;
+            color: white;
+            font-family: inherit;
+            font-size: 13.5px;
+            font-weight: 500;
+            outline: none;
+            transition: .25s ease;
+        }
+
+        .search-input::placeholder {
+            color: var(--muted);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+        }
+
+        .btn-clear {
+            position: absolute;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #ddd6fe;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-clear:hover {
+            background: rgba(251, 113, 133, 0.3);
+            color: white;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            background: rgba(31, 23, 50, 0.65);
+            color: var(--muted);
+            font-family: inherit;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-btn:hover {
+            color: white;
+            border-color: rgba(168, 85, 247, 0.5);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #6d28d9, #9333ea);
+            border-color: rgba(216, 180, 254, 0.4);
+            color: white;
+            box-shadow: 0 4px 14px rgba(109, 40, 217, 0.3);
+        }
+
+        .tab-count {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-size: 11px;
         }
 
         /* BUTTON */
@@ -547,6 +661,33 @@
                 </a>
             </div>
 
+            <!-- TOOLBAR PENCARIAN & FILTER -->
+            <div class="toolbar">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        class="search-input"
+                        placeholder="Ketik Plat Nomor (misal: N 5454), ID (#38), atau Nama Pemilik..."
+                        autocomplete="off"
+                    >
+                    <button type="button" id="clearSearch" class="btn-clear" title="Hapus pencarian">✕</button>
+                </div>
+
+                <div class="filter-tabs">
+                    <button type="button" class="tab-btn active" data-filter="masuk">
+                        🚗 Sedang Parkir <span class="tab-count" id="count-masuk">0</span>
+                    </button>
+                    <button type="button" class="tab-btn" data-filter="keluar">
+                        ✓ Sudah Keluar <span class="tab-count" id="count-keluar">0</span>
+                    </button>
+                    <button type="button" class="tab-btn" data-filter="semua">
+                        📋 Semua <span class="tab-count" id="count-semua">0</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- TABLE -->
             <div class="table-wrap">
                 <table>
@@ -566,9 +707,13 @@
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody id="transaksiTableBody">
                         @forelse($transaksi as $item)
-                            <tr>
+                            <tr
+                                class="transaksi-row"
+                                data-status="{{ $item->status }}"
+                                data-search="{{ strtolower($item->id_parkir . ' #' . $item->id_parkir . ' ' . $item->plat_nomor . ' ' . str_replace(' ', '', $item->plat_nomor) . ' ' . $item->pemilik . ' ' . $item->nama_area) }}"
+                            >
                                 <td>#{{ $item->id_parkir }}</td>
                                 <td class="plat">{{ $item->plat_nomor }}</td>
                                 <td>{{ ucfirst($item->jenis_kendaraan) }}</td>
@@ -608,7 +753,7 @@
                                         <form action="{{ route('petugas.transaksi.keluar', $item->id_parkir) }}" method="POST">
                                             @csrf
                                             @method('PUT')
-                                            <button type="submit" class="btn-keluar" onclick="return confirm('Yakin kendaraan ini akan keluar dari parkir?')">
+                                            <button type="submit" class="btn-keluar" onclick="return confirm('Yakin kendaraan {{ $item->plat_nomor }} akan keluar dari parkir?')">
                                                 🚪 Keluar
                                             </button>
                                         </form>
@@ -620,12 +765,19 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr>
+                            <tr id="emptyDatabaseRow">
                                 <td colspan="11" class="empty">
                                     Belum ada transaksi parkir.
                                 </td>
                             </tr>
                         @endforelse
+
+                        <!-- BARIS JIKA HASIL PENCARIAN / FILTER KOSONG -->
+                        <tr id="noFilterMatchRow" style="display: none;">
+                            <td colspan="11" class="empty">
+                                Tidak ada data kendaraan yang sesuai dengan pencarian atau filter status.
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -636,6 +788,91 @@
 </div>
 
 <script>
+    // =====================================================
+    // 1. LOGIKA FILTER STATUS & PENCARIAN REAL-TIME
+    // =====================================================
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearch');
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const rows = document.querySelectorAll('.transaksi-row');
+        const noMatchRow = document.getElementById('noFilterMatchRow');
+
+        let currentStatusFilter = 'masuk'; // Default fokus ke kendaraan yang sedang parkir
+
+        // Hitung jumlah badge di setiap tab
+        function updateTabCounts() {
+            let countMasuk = 0;
+            let countKeluar = 0;
+
+            rows.forEach(row => {
+                const status = row.getAttribute('data-status');
+                if (status === 'masuk') countMasuk++;
+                if (status === 'keluar') countKeluar++;
+            });
+
+            document.getElementById('count-masuk').innerText = countMasuk;
+            document.getElementById('count-keluar').innerText = countKeluar;
+            document.getElementById('count-semua').innerText = rows.length;
+        }
+
+        // Jalankan penyaringan baris tabel
+        function filterTable() {
+            const keyword = searchInput.value.toLowerCase().trim();
+            clearSearchBtn.style.display = keyword.length > 0 ? 'flex' : 'none';
+
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const status = row.getAttribute('data-status');
+                const searchData = row.getAttribute('data-search');
+
+                const matchStatus = (currentStatusFilter === 'semua') || (status === currentStatusFilter);
+                const matchKeyword = keyword === '' || searchData.includes(keyword);
+
+                if (matchStatus && matchKeyword) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (rows.length > 0 && noMatchRow) {
+                noMatchRow.style.display = (visibleCount === 0) ? '' : 'none';
+            }
+        }
+
+        // Event ketik di kolom pencarian
+        searchInput.addEventListener('input', filterTable);
+
+        // Event tombol hapus pencarian (X)
+        clearSearchBtn.addEventListener('click', function () {
+            searchInput.value = '';
+            searchInput.focus();
+            filterTable();
+        });
+
+        // Event klik tab status (Sedang Parkir / Sudah Keluar / Semua)
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', function () {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentStatusFilter = this.getAttribute('data-filter');
+                filterTable();
+            });
+        });
+
+        // Otomatis fokuskan kursor ke kotak pencarian saat halaman dibuka
+        searchInput.focus();
+
+        updateTabCounts();
+        filterTable();
+    });
+
+    // =====================================================
+    // 2. CEK NOTIFIKASI REAL-TIME KENDARAAN BARU DARI ADMIN
+    // =====================================================
     function cekKendaraanDariAdmin() {
         fetch(`{{ route('petugas.transaksi.cek_kendaraan_baru') }}`)
             .then(response => {
